@@ -12,3 +12,4 @@ __PYCACHE__/
 
 # Local Packages
 dataset/*
+!dataset/stories_attributes.csv
