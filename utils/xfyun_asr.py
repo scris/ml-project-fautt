@@ -82,13 +82,11 @@ class RequestApi(object):
             response = requests.post(url=lfasr_host + api_get_result + "?" + urllib.parse.urlencode(param_dict),
                                      headers={"Content-type": "application/json"})
             result = json.loads(response.text)
-            print(result)
             status = result['content']['orderInfo']['status']
             print("status=", status)
             if status == 4:
                 break
             time.sleep(5)
-        print("get_result resp:", result)
         return result
 
 
