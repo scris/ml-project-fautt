@@ -13,3 +13,4 @@ __PYCACHE__/
 # Local Packages
 dataset/*
 !dataset/*.csv
+!dataset/*.txt

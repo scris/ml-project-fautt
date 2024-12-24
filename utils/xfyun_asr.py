@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# This is the official IFlyTEK ASR SDK code
 import base64
 import hashlib
 import hmac
