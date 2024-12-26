@@ -9,6 +9,7 @@ __PYCACHE__/
 # Model Files
 
 # Private Files
+sensitive.py
 
 # Local Packages
 dataset/*
