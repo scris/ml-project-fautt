@@ -8,6 +8,9 @@ __PYCACHE__/
 
 # Model Files
 
+# Logging Files
+catboost_info/
+
 # Private Files
 sensitive.py
 
