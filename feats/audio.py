@@ -80,3 +80,41 @@ def get_f_bank_feats(wf, sample_rate=16000, pre_emphasis_coeff=0.97,
     mel_energies = apply_mel_filter(power_spectrum, fbank)
     log_mel_features = torch.log(mel_energies)
     return log_mel_features
+
+# Get Silence Indices
+def get_silence_indices(wf_np, sr):
+    frame_length = 0.025
+    frame_shift = 0.010
+    frame_length_samples = int(frame_length * sr)
+    frame_shift_samples = int(frame_shift * sr)
+    num_frames = int((len(wf_np) - frame_length_samples) / frame_shift_samples) + 1
+    frames = np.stack([
+        wf_np[i * frame_shift_samples: i * frame_shift_samples + frame_length_samples]
+        for i in range(num_frames)
+    ])
+    frame_energy = np.sum(frames ** 2, axis=1)
+
+    energy_threshold = np.mean(frame_energy) * 0.5
+    speech_frames = frame_energy > energy_threshold
+
+    # Detect silence frames
+    min_silence_duration = 1
+    min_silence_frames = int(min_silence_duration / frame_shift)
+    silence_indices = []
+    current_silence = []
+
+    for i, is_speech in enumerate(speech_frames):
+        if not is_speech:
+            current_silence.append(i)
+        else:
+            if len(current_silence) >= min_silence_frames:
+                silence_start = current_silence[0] * frame_shift
+                silence_end = (current_silence[-1] + 1) * frame_shift
+                silence_indices.append((silence_start, silence_end))
+            current_silence = []
+
+    if len(current_silence) >= min_silence_frames:
+        silence_start = current_silence[0] * frame_shift
+        silence_end = (current_silence[-1] + 1) * frame_shift
+        silence_indices.append((silence_start, silence_end))
+    return silence_indices
