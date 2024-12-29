@@ -3,8 +3,8 @@ import torch
 import math
 
 # Do Pre-Emphasis
-def pre_emphasis(signal, pre_emphasis_coeff=0.97):
-    emphasized_signal = torch.cat((signal[:1], signal[1:] - pre_emphasis_coeff * signal[:-1]))
+def pre_emphasis(signal, pre_emphasis_co_eff=0.97):
+    emphasized_signal = torch.cat((signal[:1], signal[1:] - pre_emphasis_co_eff * signal[:-1]))
     return emphasized_signal
 
 # Do Padding and Framing
@@ -70,9 +70,9 @@ def apply_mel_filter(power_spectrum, fbank):
     mel_energies = torch.clamp(mel_energies, min=1e-10)
     return mel_energies
 
-def get_f_bank_feats(wf, sample_rate=16000, pre_emphasis_coeff=0.97,
-                              frame_size=0.025, frame_stride=0.01, NFFT=512, nfilt=40):
-    emphasized_wf = pre_emphasis(wf, pre_emphasis_coeff)
+def get_f_bank_feats(wf, sample_rate=16000, pre_emphasis_co_eff=0.97,
+                     frame_size=0.025, frame_stride=0.01, NFFT=512, nfilt=40):
+    emphasized_wf = pre_emphasis(wf, pre_emphasis_co_eff)
     frames = framing(emphasized_wf, frame_size, frame_stride, sample_rate)
     windowed_frames = windowing(frames)
     power_spectrum = compute_fft(windowed_frames, NFFT)
